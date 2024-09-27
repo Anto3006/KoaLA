@@ -1,0 +1,3 @@
+[submodule "calculateDescriptors"]
+	path = calculateDescriptors
+	url = git@github.com:Anto3006/CalculateDescriptors.git

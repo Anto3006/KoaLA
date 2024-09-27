@@ -1,0 +1,5 @@
+import descriptors.descriptorsRDKit
+import descriptors.descriptorsJazzy
+import descriptors.descriptorsConjugated
+import descriptors.calculateDescriptors
+import descriptors.parameterReader
