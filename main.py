@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 from descriptors import calculateDescriptors
+from parameterReader import ParameterReader
 
 def mean(list_values):
   total = sum(list_values)
@@ -62,9 +63,32 @@ def make_predictions(smiles):
     predictions = pd.DataFrame({"smiles":smiles,"Predicted logKoa":logKoa_prediction})
     return predictions
 
+def get_smiles_from_csv(file_path):
+  smiles_colum_names = ["smiles","SMILES","Smiles"]
+  data = pd.read_csv(file_path)
+  for col_name in smiles_colum_names:
+    if col_name in data.columns:
+      return list(data[col_name])
+  print(f"SMILES columns not found in {file_path}")
+  return []
+
+
 def main():
-  smiles = input("Enter the SMILES:\n")
-  print(make_predictions(smiles.split(" ")))
+  parameters = ParameterReader().readParameters()
+  predictions = []
+  if parameters.smiles != None:
+    smiles_predictions = make_predictions(parameters.smiles)
+    predictions.append(smiles_predictions)
+  if parameters.file != None:
+    file_predictions = get_smiles_from_csv(parameters.file)
+    predictions.append(file_predictions)
+  predictions = pd.concat(predictions,ignore_index=True)
+  if parameters.output != None:
+    predictions.to_csv(parameters.output)
+  else:
+    predictions.to_csv("predictions.csv")
+
+
 
 if __name__ == "__main__":
   main()
